@@ -16,13 +16,15 @@ return new class extends Migration
             $table->string('nombreCompleto');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('dni')->unique();
+            $table->string('dni')->unique()->nullable();
             $table->string('provincia');
             $table->string('ciudad');
             $table->string('direccion');
             $table->string('fotoUrl')->nullable();
-            $table->string('celular')->nullable();
-            $table->boolean('celularVerificado')->default(false);
+            $table->enum('refugio', ['false', 'true'])->default('false');
+            $table->text('horario')->nullable();
+            $table->text('descripcion')->nullable();
+            $table->text('galeriaFotos')->nullable();
             $table->string('token_verificacion')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

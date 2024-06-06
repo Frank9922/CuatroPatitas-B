@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('adopcions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idMascota');
-            $table->morphs('nuevoDuenio');
+            $table->unsignedBigInteger('idNuevoDuenio');
+            $table->unsignedBigInteger('idAntiguoDuenio');
             $table->text('descripcion');
-            $table->timestamp('fechaInicio');
-            $table->timestamp('fechaFin');
+            $table->timestamp('fechaAdopcion');
             $table->text('fotosTestigo');
             $table->timestamps();
 
 
             $table->foreign('idMascota')->references('id')->on('mascotas');
+            $table->foreign('idNuevoDuenio')->references('id')->on('users');
+            $table->foreign('idAntiguoDuenio')->references('id')->on('users');
         });
     }
 

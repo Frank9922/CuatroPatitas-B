@@ -18,8 +18,11 @@ return new class extends Migration
             $table->string('raza');
             $table->enum('sexo', ['macho', 'hembra']);
             $table->text('descripcion');
-            $table->morphs('duenio');
+            $table->unsignedBigInteger('user_id');            
             $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
