@@ -6,7 +6,7 @@ use App\Jobs\SendRegistrationEmail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class AuthService {
 
@@ -19,6 +19,12 @@ class AuthService {
 
 
     public function registrarUsuario(array $data) : JsonResponse {
+
+        if(isset($data['refugio'])){
+            unset($data['dni']);
+        } else {
+            unset($data['horario'], $data['descripcion'], $data['refugio']);
+        }
 
         // Creo el usuario 
         if(!$user = User::create($data)) {

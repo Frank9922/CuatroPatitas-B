@@ -21,15 +21,30 @@ class RegisterUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'nombreCompleto'    => 'required',
             'password'          => 'required|string|min:6',  
             'email'             => 'required|string|unique:users',
-            'celular'           => 'required|string|unique:users',
-            'dni'               => 'required|string|unique:users',
             'provincia'         => 'required|string',
             'ciudad'            => 'required|string|min:4',
             'direccion'         => 'required|string|min:5|max:50',
         ];
+
+        if($this->request->get('refugio') === 'true') {
+            $rules = array_merge($rules, [
+                'descripcion'   => 'required|string',
+                'horario'       => 'required|string',
+            ]);
+
+            
+        } else {
+            $rules = array_merge($rules, [
+                'dni' => 'required|unique:users',
+            ]);
+        }
+        return $rules;
+
+
+
     }
 }

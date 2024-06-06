@@ -57,7 +57,7 @@ class AuthRefugioService {
 
     public function loginRefugio(array $data) : JsonResponse {
 
-        if(!Auth::attempt($data)) {
+        if($refugio = !Auth::attempt($data)) {
             return $this->responseService->errorResponse([
                 'ok' => false,
                 'message' => 'Email y contraseña incorrectas'
