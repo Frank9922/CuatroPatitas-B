@@ -16,11 +16,11 @@ class ApiResponse
         ], $statusCode);
     }
 
-    public static function errorResponse($data = null, $statusCode = 400) : JsonResponse
+    public static function errorResponse($message = null, $statusCode = 400) : JsonResponse
     {
         return response()->json([
             'ok' => false,
-            ...$data
+            'message' => $message
         ], $statusCode);
     }
 }

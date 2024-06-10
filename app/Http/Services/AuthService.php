@@ -22,10 +22,7 @@ class AuthService {
         // Creo el usuario 
         if(!$user = User::create($data)) {
 
-            return ApiResponse::errorResponse([
-                'ok' => false,
-                'message' => 'Hubo un error al registrar el usuario.'
-            ]);
+            return ApiResponse::errorResponse('Hubo un error al registrar el usuario.');
 
         }
         //Mando Mail para verificar el usuario
@@ -55,10 +52,7 @@ class AuthService {
     public function loginUsuario(array $data) : JsonResponse {
 
         if(!Auth::attempt($data)) {
-            return ApiResponse::errorResponse([
-                'ok' => false,
-                'message' => 'Email y contraseña incorrectas'
-            ]);
+            return ApiResponse::errorResponse('Email y contraseña incorrectas');
         }
 
        $user = User::where('email', $data['email'])->first();
@@ -96,10 +90,7 @@ class AuthService {
 
         if(!$user = User::where('token_verificacion', $token)->first()) {
 
-            return ApiResponse::errorResponse([
-                'ok'      => false,
-                'message' => 'El token no es valido'
-            ]);
+            return ApiResponse::errorResponse('El token no es valido');
         }
 
         try {
@@ -109,10 +100,7 @@ class AuthService {
 
         } catch (\Exception $e) {
 
-            return ApiResponse::errorResponse([
-                'ok'      => false,
-                'message' => $e->getMessage(),
-            ]);
+            return ApiResponse::errorResponse($e->getMessage());
         }
 
         return ApiResponse::successResponse([
