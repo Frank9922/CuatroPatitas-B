@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuthRefugioController;
+use App\Http\Controllers\Api\MascotasController;
 use Illuminate\Support\Facades\Route;
-
 
 
 
@@ -22,6 +22,11 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+
+     Route::resource('mascotas', MascotasController::class)->except(['create', 'edit']);
+
+});
 
 
 

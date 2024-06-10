@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\ApiResponse;
 use App\Jobs\SendRegistrationEmail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -9,14 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AuthService {
-
-    private $responseService;
-
-    public function __construct(ResponseService $responseService)
-    {
-        $this->responseService = $responseService;
-    }
-
 
     public function registrarUsuario(array $data) : JsonResponse {
 
@@ -29,7 +22,7 @@ class AuthService {
         // Creo el usuario 
         if(!$user = User::create($data)) {
 
-            return $this->responseService->errorResponse([
+            return ApiResponse::errorResponse([
                 'ok' => false,
                 'message' => 'Hubo un error al registrar el usuario.'
             ]);
@@ -41,16 +34,14 @@ class AuthService {
 
             SendRegistrationEmail::dispatch($user);
 
-            return $this->responseService->successResponse([
-                'ok' => true,
+            return ApiResponse::successResponse([
                 'message' => 'Registro exitoso!',
                 'usuario' => $user,
                 'email' => 'Se envio un mail de verificacion al usuario.'
             ], 201);
 
         } catch (\Exception $e) { 
-            return $this->responseService->successResponse([
-                'ok' => true,
+            return ApiResponse::successResponse([
                 'message' => 'Registro exitoso!',
                 'usuario' => $user,
                 'email' => 'No se pudo enviar el mail de verificacion'
@@ -64,7 +55,7 @@ class AuthService {
     public function loginUsuario(array $data) : JsonResponse {
 
         if(!Auth::attempt($data)) {
-            return $this->responseService->errorResponse([
+            return ApiResponse::errorResponse([
                 'ok' => false,
                 'message' => 'Email y contraseña incorrectas'
             ]);
@@ -73,8 +64,7 @@ class AuthService {
        $user = User::where('email', $data['email'])->first();
         
 
-        return $this->responseService->successResponse([
-            'ok' => true,
+        return ApiResponse::successResponse([
             'message' => 'Login Successfully',
             'user' => $user,
             'token' => $user->createToken("API_TOKEN")->plainTextToken
@@ -83,11 +73,10 @@ class AuthService {
     }
 
     public function logoutUsuario($request) : JsonResponse {
-
+        
        auth()->user()->tokens()->delete();
 
-        return $this->responseService->successResponse([
-            'ok' => true,
+        return ApiResponse::successResponse([
             'message' => 'Logout Successfully',
         ]);
 
@@ -97,8 +86,7 @@ class AuthService {
 
     public function getUser($request) : JsonResponse {
 
-        return $this->responseService->successResponse([
-            'ok' => true,
+        return ApiResponse::successResponse([
             'message' => 'Get User Successfully',
             'user' => $request->user()
         ]);
@@ -108,7 +96,7 @@ class AuthService {
 
         if(!$user = User::where('token_verificacion', $token)->first()) {
 
-            return $this->responseService->errorResponse([
+            return ApiResponse::errorResponse([
                 'ok'      => false,
                 'message' => 'El token no es valido'
             ]);
@@ -121,13 +109,13 @@ class AuthService {
 
         } catch (\Exception $e) {
 
-            return $this->responseService->errorResponse([
+            return ApiResponse::errorResponse([
                 'ok'      => false,
                 'message' => $e->getMessage(),
             ]);
         }
 
-        return $this->responseService->successResponse([
+        return ApiResponse::successResponse([
             'ok'      => true,
             'message' => 'Verificacion exitosa'
         ]);

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('raza');
             $table->enum('sexo', ['macho', 'hembra']);
             $table->text('descripcion');
+            $table->text('galeriaFotos')->nullable();
             $table->unsignedBigInteger('user_id');            
             $table->timestamps();
 
