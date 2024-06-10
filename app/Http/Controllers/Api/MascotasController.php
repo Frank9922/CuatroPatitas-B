@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\AdopcionRequest;
 use App\Http\Services\MascotasService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class MascotasController extends Controller
      */
     public function index() : JsonResponse
     {
-       return $this->mascotasService->mostrarMascotas();
+       return $this->mascotasService->todasLasMascotas();
     }
 
     /**
@@ -48,6 +48,11 @@ class MascotasController extends Controller
      */
     public function update(Request $request, string $id) : JsonResponse
     {
+        // return response()->json([
+        //     'request' => $request->all(),
+        //     'id' => $id,
+        // ]);
+    
         return $this->mascotasService->actualizarMascota($id, $request->all());
     }
 
@@ -57,5 +62,13 @@ class MascotasController extends Controller
     public function destroy(string $id) : JsonResponse
     {
         return $this->mascotasService->eliminarMascota($id);
+    }
+
+    /**
+     * Adoptar una mascota
+     */
+    public function adopcion(AdopcionRequest $request) : JsonResponse 
+    {
+        return $this->mascotasService->adoptarMascota($request->all());
     }
 }
