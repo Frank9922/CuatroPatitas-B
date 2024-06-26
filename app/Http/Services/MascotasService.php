@@ -14,7 +14,7 @@ class MascotasService {
 
     public function todasLasMascotas() : JsonResponse {
 
-        $mascotas = Mascota::with('duenio')->get();
+        $mascotas = Mascota::with('raza')->get();
 
         return ApiResponse::successResponse([
             'mascotas' => $mascotas

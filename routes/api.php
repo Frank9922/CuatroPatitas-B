@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MascotasController;
+use App\Http\Controllers\Api\RefugioController;
 use Illuminate\Support\Facades\Route;
-
 
 
 Route::prefix('auth')->group(function () {
@@ -21,11 +21,12 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::get('mascotas', [MascotasController::class, 'index']);
+Route::get('refugios', [RefugioController::class, 'index']);
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-     Route::resource('mascotas', MascotasController::class)->except(['create', 'edit']);
-
-
+     Route::resource('mascotas', MascotasController::class)->except(['create', 'edit', 'index']);
      Route::post('/mascotas/adopcion', [MascotasController::class, 'adopcion']);
 
 });

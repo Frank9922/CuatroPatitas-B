@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombreFantasia');
             $table->integer('edad'); /*expresada en meses */
-            $table->string('raza');
+            $table->unsignedBigInteger('raza_id');
             $table->enum('sexo', ['macho', 'hembra']);
             $table->text('descripcion');
             $table->text('galeriaFotos')->nullable();

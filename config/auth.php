@@ -65,8 +65,7 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
         'refugios' => [
-            'driver' => 'eloquent',
-            'model ' => App\Models\Refugio::class
+            'driver' => 'eloquent'
         ]
     ],
 

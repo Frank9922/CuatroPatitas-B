@@ -48,11 +48,6 @@ class MascotasController extends Controller
      */
     public function update(Request $request, string $id) : JsonResponse
     {
-        // return response()->json([
-        //     'request' => $request->all(),
-        //     'id' => $id,
-        // ]);
-    
         return $this->mascotasService->actualizarMascota($id, $request->all());
     }
 
