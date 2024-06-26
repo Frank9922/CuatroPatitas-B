@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('mascotas', function (Blueprint $table) {
             $table->boolean('adoptada')->default(false);
+
+            $table->foreign('raza_id')->references('id')->on('razas');
         });
     }
 

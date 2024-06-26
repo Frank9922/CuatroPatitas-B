@@ -15,4 +15,8 @@ class Mascota extends Model
     public function duenio() : BelongsTo {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function raza() : BelongsTo {
+        return $this->belongsTo(Raza::class, 'raza_id');
+    }
 }
