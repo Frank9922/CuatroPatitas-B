@@ -24,9 +24,8 @@ class VerifyEmail extends Mailable
         public $link = '',
     )
     {
-        if($this->model instanceof User) return $this->link = 'verifyToken';
 
-        return $this->link = 'verifyTokenRefugio';
+        return $this->link = env('FRONTEND_URL') .'/verifyToken';
 
     }
 

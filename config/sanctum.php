@@ -22,6 +22,13 @@ return [
         env('FRONTEND_URL') ? ','.parse_url(env('FRONTEND_URL'), PHP_URL_HOST) : ''
     ))),
 
+
+    'api' => [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        'throttle:api',
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Sanctum Guards
@@ -47,7 +54,7 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => 1,
 
     /*
     |--------------------------------------------------------------------------
@@ -81,4 +88,13 @@ return [
         'validate_csrf_token' => Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sanctum Route prefix
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'prefix' => 'api',
 ];

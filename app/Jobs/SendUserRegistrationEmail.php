@@ -6,25 +6,22 @@ use App\Mail\VerifyEmail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class SendRegistrationEmail implements ShouldQueue
+class SendUserRegistrationEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        public Model $model
-    )
+    public function __construct(public User $user)
     {
-        $this->model = $model;
+        $this->user = $user;
     }
 
     /**
@@ -34,10 +31,10 @@ class SendRegistrationEmail implements ShouldQueue
     {    
 
         $token = Str::random(40);
-        $this->model->token_verificacion = $token;
-        $this->model->save();
+        $this->user->token_verification = $token;
+        $this->user->save();
 
-        Mail::to($this->model->email)->send(new VerifyEmail($this->model, $token));
+        Mail::to($this->user->email)->send(new VerifyEmail($this->user, $token));
 
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Http\Services;
 
 use App\ApiResponse;
+use App\Dtos\MascotaDto;
 use App\Models\Adopcion;
 use App\Models\Mascota;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,9 +24,9 @@ class MascotasService {
 
     }
 
-    public function registrarMascota(array $data) : JsonResponse {
+    public function registrarMascota(MascotaDto $mascotaDto) : JsonResponse {
 
-        if(!$mascota = Mascota::create($data)) {
+        if(!$mascota = Mascota::create($mascotaDto->toArray())) {
              return ApiResponse::errorResponse('Hubo un error al registrar la mascota.');
         }
 
@@ -36,17 +38,22 @@ class MascotasService {
 
     }
 
-    public function mostrarMascota(string $id) : JsonResponse {
-        $mascota = Mascota::with('duenio')->where('id', $id)->get();
+    public function mostrarMascota(Request $request) : JsonResponse {
+
+        $user = User::find($request->user()->id);
+
+        dd($user);        
+
+        $mascotas = Mascota::where('publicable_type', );
 
         return ApiResponse::successResponse([
-            'message' => 'Mostrar mascota',
-            'mascota' => $mascota
+            'message' => 'Mascotas del usuario '. $user->nombreCompleto . '.',
+            'mascotas' => $mascotas
         ]);
 
     }
 
-    public function actualizarMascota(string $id, array $data) : JsonResponse {
+    public function actualizarMascota(string $id, MascotaDto $mascotaDto) : JsonResponse {
         
         if(!$mascota = Mascota::where('id', $id)->first()) {
             
@@ -57,7 +64,7 @@ class MascotasService {
         DB::beginTransaction();
         try {
 
-            $mascota->update($data);
+            $mascota->update($mascotaDto->toArray());
             DB::commit();
             return ApiResponse::successResponse([
                 'message' => 'Success',

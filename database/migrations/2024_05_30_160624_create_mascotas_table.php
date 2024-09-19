@@ -15,15 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombreFantasia');
             $table->integer('edad'); /*expresada en meses */
-            $table->unsignedBigInteger('raza_id');
             $table->enum('sexo', ['macho', 'hembra']);
             $table->text('descripcion');
             $table->text('galeriaFotos')->nullable();
-            $table->unsignedBigInteger('user_id');            
+            $table->morphs('publicable');
             $table->timestamps();
-
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

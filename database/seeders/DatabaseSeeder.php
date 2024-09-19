@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Mascota;
 use App\Models\Raza;
 use App\Models\User;
+use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -18,38 +18,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        $this->call(UserSeeder::class);
+        $this->call(RefugioSeeder::class);
+        $this->call(RazaSeeder::class);
+
         User::create([
             'nombreCompleto' => 'Franco Leiva',
             'email' => 'francoleiva990@gmail.com',
-            'password' => Hash::make('123456789'),
-            'provincia' => 'Salta',
             'dni' => '41529213',
-            'ciudad' => 'Capital',
-            'direccion' => 'Calle el dia 2252'
+            'password' => Hash::make('123456789'),
+            'fotoUrl' => fake()->imageUrl(),
+            'email_verified_at' => Carbon::now()
         ]);
 
-        echo "Usuario insertado \n";
+        echo "Usuario insertado francoleiva990@gmail.com\n";
+        
 
-        $response = Http::get(env('API_URL_RAZA'));
-        $razas = $response->json();
-        $count = 0;
-        Raza::create(['name' => 'otros']);
-        foreach($razas as $raza) {
-            unset($raza['alt_name'], $raza['slug']);
-            
-            try {
-                Raza::create($raza);
-                $count++;
-
-            } catch(\Illuminate\Database\QueryException $e) {
-
-            }
-        }
-        echo "Successfully inserted $count razas records. \n";
-
-        Mascota::factory()->count(100)->create();
-
-        echo "Mascotas insertadas.\n";
+        $this->call(MascotasSeeder::class);
+        
 
     }
 }

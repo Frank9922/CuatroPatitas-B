@@ -36,10 +36,16 @@ return [
     */
 
     'guards' => [
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'refugio' => [
+            'driver' => 'session',
+            'provider' => 'refugio',
+        ]
     ],
 
     /*
@@ -64,8 +70,9 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'refugios' => [
-            'driver' => 'eloquent'
+        'refugio' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Refugio::class
         ]
     ],
 

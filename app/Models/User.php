@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -20,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'nombreCompleto', 'email', 'celular', 'dni', 'provincia', 'ciudad', 'direccion','password', 'descripcion', 'horario','refugio'
+        'nombreCompleto', 'email', 'dni','password', 'fotoUrl', 'email_verified_at'
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -44,4 +45,16 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function mascotas() : MorphMany {
+        
+        return $this->morphMany(Mascota::class, 'publicable');
+    }
+
+    public function getModel() : string {
+        
+        return 'Usuario';
+
+    }
+
 }

@@ -2,7 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Raza;
+use App\Models\Refugio;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Http;
 use PhpParser\Node\Expr\Cast\String_;
 
 /**
@@ -10,29 +14,34 @@ use PhpParser\Node\Expr\Cast\String_;
  */
 class MascotaFactory extends Factory
 {
-    public function generateRandomSexo() : string {
-        $options = ['macho', 'hembra'];
-
-        return $options[random_int(0, count($options) - 1)];
-    }
-
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     */
+    */
     public function definition(): array
-    {
+    {   
+
+        $isUser = fake()->boolean();
+
+        $response = Http::get(env('URL_API_FOTOS'));
+        $data = $response->json();
+
+        $fotoUrl = $data['message'];
+
+
         return [
             'nombreFantasia' => fake()->firstName(),
-            'edad' => 10,
-            'raza_id' => 10,
-            'sexo' => $this->generateRandomSexo(),
+            'edad' => fake()->numberBetween(1, 250),
+            'raza_id' => Raza::inRandomOrder()->first()?->id,
+            'sexo' => fake()->randomElement(['macho', 'hembra']),
             'descripcion' => fake()->text(),
-            'galeriaFotos' => fake()->url(),
-            'user_id' => 1,
-            'adoptada' => false,
+            'galeriaFotos' => $fotoUrl,
+            'publicable_type' => $isUser ? User::class : Refugio::class, 
+            'publicable_id' => $isUser ? User::inRandomOrder()->first()?->id : Refugio::inRandomOrder()->first()?->id,
         ];
+
+
     }
 
 

@@ -18,20 +18,25 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
+    public function registerRefugio() : JsonResponse {
+
+    }
+
     public function register(RegisterUserRequest $request) : JsonResponse {
         return $this->authService->registrarUsuario($request->all());
     }
     
     public function login(LoginUserRequest $request) : JsonResponse {
-        return $this->authService->loginUsuario($request->all());
+        return $this->authService->login($request->all());
     }
+
 
     public function logout(Request $request) : JsonResponse {
         return $this->authService->logoutUsuario($request);
     }
 
-    public function user(Request $request) : JsonResponse {
-        return $this->authService->getUser($request);
+    public function user(Request $request)  {
+        return $this->authService->getAuthenticatedUser($request);
     }
 
     public function verifyToken(Request $request) : JsonResponse {

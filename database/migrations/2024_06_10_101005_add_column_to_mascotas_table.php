@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('mascotas', function (Blueprint $table) {
+            $table->unsignedBigInteger('raza_id');
             $table->boolean('adoptada')->default(false);
-
+        
+        
             $table->foreign('raza_id')->references('id')->on('razas');
         });
     }

@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
+use App\Dtos\MascotaDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdopcionRequest;
+use App\Http\Requests\MascotaRequest;
 use App\Http\Services\MascotasService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,18 +31,20 @@ class MascotasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : JsonResponse
-    {
-        return $this->mascotasService->registrarMascota($request->all());
+    public function store(MascotaRequest $request) : JsonResponse
+    {   
+        $mascota = new MascotaDto($request->all());
+
+        return $this->mascotasService->registrarMascota($mascota);
         
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id) : JsonResponse
+    public function show(Request $request) : JsonResponse
     {
-        return $this->mascotasService->mostrarMascota($id);
+        return $this->mascotasService->mostrarMascota($request);
     }
 
 
@@ -47,8 +52,10 @@ class MascotasController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) : JsonResponse
-    {
-        return $this->mascotasService->actualizarMascota($id, $request->all());
+    {   
+        $mascota = new MascotaDto($request->all());
+
+        return $this->mascotasService->actualizarMascota($id, $mascota);
     }
 
     /**
